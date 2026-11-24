@@ -1,0 +1,1497 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menú - Dianita's</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: rgb(255, 248, 231);
+    color: rgb(91, 48, 35);
+    padding: 15px;
+}
+
+.principal {
+    max-width: 1250px;
+    margin: auto;
+}
+
+.encabezado {
+    background: rgb(205, 31, 83);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.encabezado h1 {
+    font-family: Georgia, serif;
+    font-size: 30px;
+    margin-bottom: 7px;
+}
+
+.contenido {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 18px;
+}
+
+.titulo-menu {
+    color: rgb(205, 31, 83);
+    margin-bottom: 15px;
+}
+
+.pestanas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.pestana {
+    padding: 12px 16px;
+    border: none;
+    background: #eee;
+    color: rgb(91, 48, 35);
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 7px 7px 0 0;
+}
+
+.pestana.activa {
+    background: rgb(205, 31, 83);
+    color: white;
+}
+
+.productos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 12px;
+    background: #fff0e5;
+    border-radius: 8px;
+}
+
+.producto {
+    background: white;
+    padding: 18px 10px;
+    border: 2px solid rgb(205, 31, 83);
+    border-radius: 10px;
+    color: rgb(91, 48, 35);
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    min-height: 85px;
+    transition: 0.2s;
+}
+
+.producto:hover {
+    background: rgb(255, 230, 237);
+    transform: scale(1.02);
+}
+
+.producto small {
+    display: block;
+    margin-top: 7px;
+    color: rgb(205, 31, 83);
+}
+
+.panel-pedido {
+    background: white;
+    border: 2px solid rgb(205, 31, 83);
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    min-height: 500px;
+}
+
+.panel-pedido h2 {
+    color: rgb(205, 31, 83);
+    font-family: Georgia, serif;
+    margin-bottom: 15px;
+}
+
+select, input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d5a0ad;
+    border-radius: 7px;
+    margin: 5px 0 12px;
+    font-size: 14px;
+    background: white;
+    color: #5b3023;
+}
+
+.lista-pedido {
+    background: rgb(255, 248, 231);
+    border-radius: 8px;
+    padding: 10px;
+    flex: 1;
+    min-height: 180px;
+    margin-bottom: 15px;
+}
+
+.elemento-pedido {
+    padding: 10px;
+    border-bottom: 1px solid #e5d8cf;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.elemento-pedido.seleccionado {
+    background: rgb(255, 215, 225);
+    border: 1px solid rgb(205, 31, 83);
+}
+
+.elemento-pedido strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.detalle-pedido {
+    color: #806b60;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.precio-pedido {
+    text-align: right;
+    color: rgb(104, 132, 48);
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(205, 31, 83);
+    padding: 12px 0;
+    border-top: 2px solid #e5d8cf;
+}
+
+.botones {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.boton {
+    padding: 12px;
+    border: none;
+    border-radius: 7px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.boton:hover {
+    opacity: 0.85;
+}
+
+.boton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.quitar {
+    background: rgb(91, 48, 35);
+}
+
+.limpiar {
+    background: rgb(239, 125, 37);
+}
+
+.enviar {
+    background: rgb(104, 132, 48);
+}
+
+.estado {
+    margin-top: 12px;
+    color: rgb(104, 132, 48);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* MODAL */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    z-index: 100;
+}
+
+.contenido-modal {
+    background: rgb(255, 248, 231);
+    padding: 25px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 15px;
+}
+
+.contenido-modal h2 {
+    color: rgb(205, 31, 83);
+    margin-bottom: 8px;
+}
+
+.contenido-modal h3 {
+    font-size: 15px;
+    margin: 15px 0 8px;
+}
+
+.precio-modal {
+    color: rgb(104, 132, 48);
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.opcion {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.opcion input {
+    width: auto;
+    margin: 0;
+}
+
+.grupo-sabores {
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.acciones-modal {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.acciones-modal button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.aceptar {
+    background: rgb(205, 31, 83);
+    color: white;
+}
+
+.cancelar {
+    background: #e7d5d9;
+    color: #5f3c32;
+}
+
+.sin-productos {
+    color: #999;
+    text-align: center;
+    padding: 20px 5px;
+}
+
+@media(max-width: 800px) {
+    .contenido {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 450px) {
+    .productos {
+        grid-template-columns: 1fr;
+    }
+
+    .encabezado h1 {
+        font-size: 23px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="principal">
+
+    <header class="encabezado">
+        <h1>ANTOJITOS DIANITA'S</h1>
+        <p>Seleccionar productos</p>
+    </header>
+
+    <div class="contenido">
+
+        <section>
+            <h2 class="titulo-menu">MENÚ DE PRODUCTOS</h2>
+
+            <div class="pestanas">
+
+                <button class="pestana activa"
+                    onclick="cambiarCategoria('Antojitos', this)">
+                    Antojitos
+                </button>
+
+                <button class="pestana"
+                    onclick="cambiarCategoria('Tacos', this)">
+                    Tacos
+                </button>
+
+                <button class="pestana"
+                    onclick="cambiarCategoria('Complementos', this)">
+                    Complementos
+                </button>
+
+                <button class="pestana"
+                    onclick="cambiarCategoria('Bebidas', this)">
+                    Bebidas
+                </button>
+
+            </div>
+
+            <div class="productos" id="productos"></div>
+        </section>
+
+        <aside class="panel-pedido">
+
+            <h2>PEDIDO DE MESA</h2>
+
+            <select id="comboMesa" onchange="actualizarPedido()">
+                <option value="Mesa 1">Mesa 1</option>
+                <option value="Mesa 2">Mesa 2</option>
+                <option value="Mesa 3">Mesa 3</option>
+                <option value="Mesa 4">Mesa 4</option>
+                <option value="Mesa 5">Mesa 5</option>
+                <option value="Mesa 6">Mesa 6</option>
+                <option value="Mesa 7">Mesa 7</option>
+                <option value="Mesa 8">Mesa 8</option>
+            </select>
+
+            <div class="lista-pedido" id="listaPedido">
+                <p class="sin-productos">
+                    Sin productos seleccionados
+                </p>
+            </div>
+
+            <div class="total">
+                <span>TOTAL:</span>
+                <span id="totalPedido">$0.00</span>
+            </div>
+
+            <div class="botones">
+
+                <button class="boton quitar"
+                    onclick="quitarProducto()">
+                    Quitar producto
+                </button>
+
+                <button class="boton limpiar"
+                    onclick="limpiarPedido()">
+                    Limpiar pedido
+                </button>
+
+                <button class="boton enviar"
+                    id="btnEnviar"
+                    onclick="enviarPedido()">
+                    Enviar a cocina
+                </button>
+
+            </div>
+
+            <p class="estado" id="estado">
+                Selecciona una mesa
+            </p>
+
+        </aside>
+
+    </div>
+</div>
+
+<!-- MODAL DE PERSONALIZACIÓN -->
+
+<div class="modal" id="modalProducto">
+
+    <div class="contenido-modal">
+
+        <h2 id="nombreProducto"></h2>
+
+        <p class="precio-modal" id="precioProducto"></p>
+
+        <div id="opcionesProducto"></div>
+
+        <div class="acciones-modal">
+
+            <button class="aceptar"
+                onclick="confirmarProducto()">
+                Agregar al pedido
+            </button>
+
+            <button class="cancelar"
+                onclick="cerrarModal()">
+                Cancelar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+// ==========================================
+// CATÁLOGO DE PRODUCTOS
+// ==========================================
+
+const catalogo = {
+
+    quesadillas: {
+        nombre: "Quesadillas",
+        categoria: "Antojitos",
+        precio: 40,
+        presentacion: "Paquete de 3",
+        cantidadSabores: 3,
+        sabores: [
+            "Tinga",
+            "Chicharrón",
+            "Champiñones",
+            "Flor de calabaza",
+            "Queso",
+            "Papa",
+            "Papa con longaniza",
+            "Suadero"
+        ],
+        personalizar: true
+    },
+
+    gorditas: {
+        nombre: "Gorditas",
+        categoria: "Antojitos",
+        precio: 40,
+        presentacion: "Por pieza",
+        cantidadSabores: 1,
+        sabores: ["Chicharrón", "Suadero"],
+        personalizar: true
+    },
+
+    flautas: {
+        nombre: "Flautas",
+        categoria: "Antojitos",
+        precio: 40,
+        presentacion: "Paquete de 3",
+        cantidadSabores: 3,
+        sabores: [
+            "Tinga",
+            "Chicharrón",
+            "Champiñones",
+            "Flor de calabaza",
+            "Queso",
+            "Papa",
+            "Papa con longaniza",
+            "Suadero"
+        ],
+        personalizar: true
+    },
+
+    tostadaGrande: {
+        nombre: "Tostada grande",
+        categoria: "Antojitos",
+        precio: 40,
+        presentacion: "Por pieza",
+        cantidadSabores: 1,
+        sabores: ["Tinga", "Pata"],
+        personalizar: true
+    },
+
+    miniTostadas: {
+        nombre: "Mini tostadas",
+        categoria: "Antojitos",
+        precio: 40,
+        presentacion: "Paquete de 4",
+        cantidadSabores: 4,
+        sabores: ["Tinga", "Pata"],
+        personalizar: true
+    },
+
+    pambazos: {
+        nombre: "Pambazos",
+        categoria: "Antojitos",
+        precio: 40,
+        presentacion: "Por pieza",
+        cantidadSabores: 1,
+        sabores: [
+            "Tinga",
+            "Papa",
+            "Papa con longaniza"
+        ],
+        personalizar: true
+    },
+
+    torta: {
+        nombre: "Torta de suadero",
+        categoria: "Antojitos",
+        precio: 40,
+        presentacion: "Por pieza",
+        personalizar: false
+    },
+
+    huarache: {
+        nombre: "Huarache",
+        categoria: "Antojitos",
+        precio: 40,
+        presentacion: "Sencillo",
+        opcionesTipo: ["Sencillo", "Extra"],
+        preciosTipo: {
+            "Sencillo": 40,
+            "Extra": 70
+        },
+        cantidadSabores: 1,
+        sabores: ["Suadero", "Bistec", "Queso"],
+        personalizar: true
+    },
+
+    sope: {
+        nombre: "Sope",
+        categoria: "Antojitos",
+        precio: 40,
+        presentacion: "Sencillo",
+        opcionesTipo: ["Sencillo", "Extra"],
+        preciosTipo: {
+            "Sencillo": 40,
+            "Extra": 70
+        },
+        cantidadSabores: 1,
+        sabores: ["Suadero", "Bistec", "Queso"],
+        personalizar: true
+    },
+
+    tacosGrandes: {
+        nombre: "Taco grande",
+        categoria: "Tacos",
+        precio: 30,
+        presentacion: "Por pieza",
+        cantidadSabores: 1,
+        sabores: [
+            "Suadero",
+            "Bistec",
+            "Arrachera",
+            "Campechano",
+            "Longaniza"
+        ],
+        personalizar: true
+    },
+
+    miniTacos: {
+        nombre: "Mini tacos",
+        categoria: "Tacos",
+        precio: 40,
+        presentacion: "Paquete de 4",
+        cantidadSabores: 4,
+        sabores: [
+            "Suadero",
+            "Longaniza",
+            "Campechano"
+        ],
+        personalizar: true
+    },
+
+    aguaGrande: {
+        nombre: "Agua de sabor 1 litro",
+        categoria: "Bebidas",
+        precio: 40,
+        presentacion: "1 litro",
+        personalizar: false,
+        bebida: true
+    },
+
+    aguaMedia: {
+        nombre: "Agua de sabor 1/2 litro",
+        categoria: "Bebidas",
+        precio: 20,
+        presentacion: "1/2 litro",
+        personalizar: false,
+        bebida: true
+    },
+
+    refresco: {
+        nombre: "Refresco 1/2 litro",
+        categoria: "Bebidas",
+        precio: 25,
+        presentacion: "1/2 litro",
+        personalizar: false,
+        bebida: true
+    },
+
+    quesoExtra: {
+        nombre: "Extra queso",
+        categoria: "Complementos",
+        precio: 5,
+        presentacion: "Por porción",
+        personalizar: false
+    }
+
+};
+
+
+// ==========================================
+// CATEGORÍAS
+// ==========================================
+
+const categorias = {
+
+    Antojitos: [
+        "quesadillas",
+        "gorditas",
+        "flautas",
+        "tostadaGrande",
+        "miniTostadas",
+        "pambazos",
+        "torta",
+        "huarache",
+        "sope"
+    ],
+
+    Tacos: [
+        "tacosGrandes",
+        "miniTacos"
+    ],
+
+    Complementos: [
+        "quesoExtra"
+    ],
+
+    Bebidas: [
+        "aguaGrande",
+        "aguaMedia",
+        "refresco"
+    ]
+
+};
+
+
+// ==========================================
+// COLORES
+// ==========================================
+
+const colores = {
+
+    Antojitos: "rgb(205, 31, 83)",
+    Tacos: "rgb(104, 132, 48)",
+    Complementos: "rgb(239, 125, 37)",
+    Bebidas: "rgb(116, 76, 153)"
+
+};
+
+
+// ==========================================
+// PEDIDOS POR MESA
+// ==========================================
+
+let pedidos = {};
+
+for (let i = 1; i <= 8; i++) {
+    pedidos["Mesa " + i] = [];
+}
+
+let productoActual = null;
+let productoSeleccionado = null;
+let contadorID = 0;
+
+
+// ==========================================
+// CAMBIAR CATEGORÍA
+// ==========================================
+
+function cambiarCategoria(categoria, boton) {
+
+    document.querySelectorAll(".pestana").forEach(p => {
+        p.classList.remove("activa");
+    });
+
+    boton.classList.add("activa");
+
+    mostrarProductos(categoria);
+
+}
+
+
+// ==========================================
+// MOSTRAR PRODUCTOS
+// ==========================================
+
+function mostrarProductos(categoria) {
+
+    const contenedor = document.getElementById("productos");
+
+    contenedor.innerHTML = "";
+
+    categorias[categoria].forEach(clave => {
+
+        const producto = catalogo[clave];
+
+        const boton = document.createElement("button");
+
+        boton.className = "producto";
+
+        boton.style.borderColor = colores[categoria];
+
+        const nombre = document.createElement("span");
+        nombre.textContent = producto.nombre;
+
+        const precio = document.createElement("small");
+        precio.textContent =
+            "$" + producto.precio.toFixed(2) +
+            " - " + producto.presentacion;
+
+        boton.appendChild(nombre);
+        boton.appendChild(precio);
+
+        boton.onclick = () => abrirPersonalizacion(clave);
+
+        contenedor.appendChild(boton);
+
+    });
+
+}
+
+
+// ==========================================
+// ABRIR PERSONALIZACIÓN
+// ==========================================
+
+function abrirPersonalizacion(clave) {
+
+    productoActual = catalogo[clave];
+
+    document.getElementById("nombreProducto").textContent =
+        productoActual.nombre;
+
+    document.getElementById("precioProducto").textContent =
+        "$" + productoActual.precio.toFixed(2) +
+        " - " + productoActual.presentacion;
+
+    const contenedor = document.getElementById("opcionesProducto");
+
+    contenedor.innerHTML = "";
+
+    // CANTIDAD
+
+    contenedor.innerHTML += `
+        <h3>¿Cuántos deseas?</h3>
+        <input type="number" id="cantidad" min="1" value="1">
+    `;
+
+    // TIPO SENCILLO O EXTRA
+
+    if (productoActual.opcionesTipo) {
+
+        let opciones = "";
+
+        productoActual.opcionesTipo.forEach(tipo => {
+
+            opciones += `
+                <option value="${tipo}">
+                    ${tipo} - $${productoActual.preciosTipo[tipo]}
+                </option>
+            `;
+
+        });
+
+        contenedor.innerHTML += `
+            <h3>Selecciona el tipo</h3>
+
+            <select id="tipoProducto"
+                onchange="actualizarPrecioModal()">
+                ${opciones}
+            </select>
+        `;
+
+    }
+
+    // SABORES
+
+    if (productoActual.sabores) {
+
+        contenedor.innerHTML += `
+            <h3>Selecciona los sabores</h3>
+
+            <p style="font-size:13px;margin-bottom:10px">
+                Debes elegir ${productoActual.cantidadSabores}
+                sabor(es) por paquete o pieza.
+            </p>
+
+            <div id="sabores"></div>
+        `;
+
+        const contenedorSabores =
+            document.getElementById("sabores");
+
+        for (
+            let i = 1;
+            i <= productoActual.cantidadSabores;
+            i++
+        ) {
+
+            let opciones = `
+                <option value="">Selecciona un sabor</option>
+            `;
+
+            productoActual.sabores.forEach(sabor => {
+
+                opciones += `
+                    <option value="${sabor}">
+                        ${sabor}
+                    </option>
+                `;
+
+            });
+
+            contenedorSabores.innerHTML += `
+                <div class="grupo-sabores">
+
+                    <label>
+                        <strong>Elección ${i}</strong>
+                    </label>
+
+                    <select class="saborElegido" required>
+                        ${opciones}
+                    </select>
+
+                </div>
+            `;
+
+        }
+
+    }
+
+    // BEBIDAS
+
+    if (productoActual.bebida) {
+
+        contenedor.innerHTML += `
+            <h3>Sabor del agua o refresco</h3>
+
+            <input type="text"
+                id="saborBebida"
+                placeholder="Ej. Jamaica, limón...">
+        `;
+
+    }
+
+    // INGREDIENTES Y EXTRAS
+
+    if (!productoActual.bebida) {
+
+        contenedor.innerHTML += `
+
+            <h3>Detalles del pedido</h3>
+
+            <p style="font-size:13px;margin-bottom:8px">
+                Marca los ingredientes que NO desea el cliente.
+            </p>
+
+            <div class="opcion">
+                <input type="checkbox"
+                    class="quitarIngrediente"
+                    value="Lechuga">
+                Sin lechuga
+            </div>
+
+            <div class="opcion">
+                <input type="checkbox"
+                    class="quitarIngrediente"
+                    value="Crema">
+                Sin crema
+            </div>
+
+            <div class="opcion">
+                <input type="checkbox"
+                    class="quitarIngrediente"
+                    value="Queso rallado">
+                Sin queso rallado
+            </div>
+
+            <div class="opcion">
+                <input type="checkbox"
+                    class="quitarIngrediente"
+                    value="Salsa">
+                Sin salsa
+            </div>
+
+            <div class="opcion">
+                <input type="checkbox"
+                    class="quitarIngrediente"
+                    value="Cebolla">
+                Sin cebolla
+            </div>
+
+            <div class="opcion">
+                <input type="checkbox"
+                    class="quitarIngrediente"
+                    value="Cilantro">
+                Sin cilantro
+            </div>
+
+            <h3>Extras</h3>
+
+            <div class="opcion">
+                <input type="checkbox" id="extraQueso"
+                    onchange="actualizarPrecioModal()">
+                Agregar queso extra (+$5.00)
+            </div>
+
+            <h3>Indicaciones adicionales</h3>
+
+            <textarea id="observaciones"
+                rows="3"
+                placeholder="Ej. Bien doradas, poca salsa, etc."></textarea>
+
+        `;
+
+    }
+
+    actualizarPrecioModal();
+
+    document.getElementById("modalProducto").style.display = "flex";
+
+}
+
+
+// ==========================================
+// ACTUALIZAR PRECIO
+// ==========================================
+
+function actualizarPrecioModal() {
+
+    if (!productoActual) return;
+
+    let precio = productoActual.precio;
+
+    if (productoActual.opcionesTipo) {
+
+        const tipo =
+            document.getElementById("tipoProducto").value;
+
+        precio = productoActual.preciosTipo[tipo];
+
+    }
+
+    const extra = document.getElementById("extraQueso");
+
+    if (extra && extra.checked) {
+        precio += 5;
+    }
+
+    document.getElementById("precioProducto").textContent =
+        "$" + precio.toFixed(2) +
+        " por " + productoActual.presentacion;
+
+}
+
+
+// ==========================================
+// CERRAR MODAL
+// ==========================================
+
+function cerrarModal() {
+
+    document.getElementById("modalProducto").style.display = "none";
+
+    productoActual = null;
+
+}
+
+
+// ==========================================
+// CONFIRMAR PRODUCTO
+// ==========================================
+
+function confirmarProducto() {
+
+    if (!productoActual) return;
+
+    const cantidad =
+        parseInt(document.getElementById("cantidad").value);
+
+    if (!Number.isInteger(cantidad) || cantidad < 1) {
+
+        alert("Ingresa una cantidad válida.");
+
+        return;
+
+    }
+
+    // SABORES
+
+    let sabores = [];
+
+    if (productoActual.sabores) {
+
+        const selecciones =
+            document.querySelectorAll(".saborElegido");
+
+        for (const select of selecciones) {
+
+            if (!select.value) {
+
+                alert("Debes seleccionar todos los sabores.");
+
+                return;
+
+            }
+
+            sabores.push(select.value);
+
+        }
+
+    }
+
+    // PRECIO Y TIPO
+
+    let precio = productoActual.precio;
+
+    let tipo = "";
+
+    if (productoActual.opcionesTipo) {
+
+        tipo = document.getElementById("tipoProducto").value;
+
+        precio = productoActual.preciosTipo[tipo];
+
+    }
+
+    // INGREDIENTES
+
+    let sinIngredientes = [];
+
+    document.querySelectorAll(
+        ".quitarIngrediente:checked"
+    ).forEach(check => {
+
+        sinIngredientes.push(check.value);
+
+    });
+
+    // EXTRAS
+
+    const extraQueso =
+        document.getElementById("extraQueso");
+
+    let extras = [];
+
+    if (extraQueso && extraQueso.checked) {
+
+        extras.push("Queso extra");
+
+        precio += 5;
+
+    }
+
+    // OBSERVACIONES
+
+    let observaciones = "";
+
+    const campoObservaciones =
+        document.getElementById("observaciones");
+
+    if (campoObservaciones) {
+
+        observaciones = campoObservaciones.value.trim();
+
+    }
+
+    // SABOR DE BEBIDA
+
+    const campoBebida =
+        document.getElementById("saborBebida");
+
+    if (campoBebida && campoBebida.value.trim()) {
+
+        observaciones = "Sabor: " + campoBebida.value.trim();
+
+    }
+
+    // CREAR PEDIDO
+
+    const pedido = {
+
+        id: ++contadorID,
+
+        nombre: productoActual.nombre,
+
+        presentacion: productoActual.presentacion,
+
+        cantidad: cantidad,
+
+        sabores: sabores,
+
+        tipo: tipo,
+
+        sinIngredientes: sinIngredientes,
+
+        extras: extras,
+
+        observaciones: observaciones,
+
+        precioUnitario: precio,
+
+        total: precio * cantidad
+
+    };
+
+    const mesa =
+        document.getElementById("comboMesa").value;
+
+    pedidos[mesa].push(pedido);
+
+    cerrarModal();
+
+    actualizarPedido();
+
+    document.getElementById("estado").textContent =
+        pedido.nombre + " agregado a " + mesa;
+
+}
+
+
+// ==========================================
+// ACTUALIZAR PEDIDO
+// ==========================================
+
+function actualizarPedido() {
+
+    const mesa =
+        document.getElementById("comboMesa").value;
+
+    const lista =
+        document.getElementById("listaPedido");
+
+    lista.innerHTML = "";
+
+    productoSeleccionado = null;
+
+    const pedido = pedidos[mesa];
+
+    if (pedido.length === 0) {
+
+        lista.innerHTML =
+            '<p class="sin-productos">Sin productos seleccionados</p>';
+
+        document.getElementById("totalPedido").textContent =
+            "$0.00";
+
+        document.getElementById("estado").textContent =
+            mesa + " sin pedido";
+
+        return;
+
+    }
+
+    let total = 0;
+
+    pedido.forEach(item => {
+
+        total += item.total;
+
+        const fila = document.createElement("div");
+
+        fila.className = "elemento-pedido";
+
+        let detalles = [];
+
+        if (item.tipo) {
+            detalles.push("Tipo: " + item.tipo);
+        }
+
+        if (item.sabores.length > 0) {
+
+            detalles.push(
+                "Sabores: " + item.sabores.join(", ")
+            );
+
+        }
+
+        if (item.sinIngredientes.length > 0) {
+
+            detalles.push(
+                "Sin: " + item.sinIngredientes.join(", ")
+            );
+
+        }
+
+        if (item.extras.length > 0) {
+
+            detalles.push(
+                "Extras: " + item.extras.join(", ")
+            );
+
+        }
+
+        if (item.observaciones) {
+
+            detalles.push(
+                "Nota: " + item.observaciones
+            );
+
+        }
+
+        const titulo = document.createElement("strong");
+
+        titulo.textContent =
+            item.nombre + " x" + item.cantidad;
+
+        const detalle = document.createElement("div");
+
+        detalle.className = "detalle-pedido";
+
+        detalle.textContent =
+            item.presentacion +
+            (detalles.length ? " | " + detalles.join(" | ") : "");
+
+        const precio = document.createElement("div");
+
+        precio.className = "precio-pedido";
+
+        precio.textContent =
+            "$" + item.total.toFixed(2);
+
+        fila.appendChild(titulo);
+        fila.appendChild(detalle);
+        fila.appendChild(precio);
+
+        fila.onclick = function() {
+
+            document.querySelectorAll(".elemento-pedido")
+                .forEach(f => f.classList.remove("seleccionado"));
+
+            fila.classList.add("seleccionado");
+
+            productoSeleccionado = item.id;
+
+        };
+
+        lista.appendChild(fila);
+
+    });
+
+    document.getElementById("totalPedido").textContent =
+        "$" + total.toFixed(2);
+
+    document.getElementById("estado").textContent =
+        "Productos: " + pedido.length;
+
+}
+
+
+// ==========================================
+// QUITAR PRODUCTO
+// ==========================================
+
+function quitarProducto() {
+
+    const mesa =
+        document.getElementById("comboMesa").value;
+
+    if (productoSeleccionado === null) {
+
+        alert("Selecciona un producto del pedido.");
+
+        return;
+
+    }
+
+    pedidos[mesa] = pedidos[mesa].filter(
+        item => item.id !== productoSeleccionado
+    );
+
+    productoSeleccionado = null;
+
+    actualizarPedido();
+
+}
+
+
+// ==========================================
+// LIMPIAR PEDIDO
+// ==========================================
+
+function limpiarPedido() {
+
+    const mesa =
+        document.getElementById("comboMesa").value;
+
+    if (pedidos[mesa].length === 0) {
+
+        alert("La mesa no tiene productos.");
+
+        return;
+
+    }
+
+    if (confirm(
+        "¿Deseas eliminar todo el pedido de " + mesa + "?"
+    )) {
+
+        pedidos[mesa] = [];
+
+        actualizarPedido();
+
+    }
+
+}
+
+
+// ==========================================
+// ENVIAR PEDIDO A COCINA
+// ==========================================
+
+async function enviarPedido() {
+
+    const mesa =
+        document.getElementById("comboMesa").value;
+
+    const pedido = pedidos[mesa];
+
+    if (pedido.length === 0) {
+
+        alert("Primero agrega productos al pedido.");
+
+        return;
+
+    }
+
+    const boton =
+        document.getElementById("btnEnviar");
+
+    let total = 0;
+
+    pedido.forEach(item => {
+
+        total += item.total;
+
+    });
+
+    // INFORMACIÓN QUE SE ENVÍA A PHP
+
+    const datos = {
+
+        mesa: mesa,
+
+        productos: pedido,
+
+        total: total
+
+    };
+
+    boton.disabled = true;
+
+    boton.textContent = "Enviando...";
+
+    try {
+
+        const respuesta = await fetch(
+            "php/pedidos/guardarPedido.php",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(datos)
+            }
+        );
+
+        if (!respuesta.ok) {
+
+            throw new Error("Error en el servidor");
+
+        }
+
+        const resultado = await respuesta.json();
+
+        if (resultado.success) {
+
+            alert(
+                "¡PEDIDO ENVIADO A COCINA!\n\n" +
+                "Mesa: " + mesa +
+                "\nNúmero de pedido: " +
+                resultado.id_pedido +
+                "\nTotal: $" + total.toFixed(2)
+            );
+
+            // VACIAR SOLAMENTE SI SE GUARDA CORRECTAMENTE
+
+            pedidos[mesa] = [];
+
+            productoSeleccionado = null;
+
+            actualizarPedido();
+
+            document.getElementById("estado").textContent =
+                "Pedido enviado correctamente a cocina";
+
+        } else {
+
+            alert(
+                resultado.mensaje ||
+                "No se pudo enviar el pedido."
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error("Error:", error);
+
+        alert(
+            "No se pudo conectar con el servidor.\n" +
+            "Verifica que Apache y MySQL estén funcionando."
+        );
+
+    } finally {
+
+        boton.disabled = false;
+
+        boton.textContent = "Enviar a cocina";
+
+    }
+
+}
+
+
+// ==========================================
+// INICIAR MENÚ
+// ==========================================
+
+mostrarProductos("Antojitos");
+
+actualizarPedido();
+
+</script>
+<script src="js/notificaciones.js"></script>
+</body>
+</html>

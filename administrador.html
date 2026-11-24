@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Principal - Dianita's</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #fff7f0;
+        color: #5f3c32;
+        min-height: 100vh;
+    }
+
+    header {
+        background-color: #efa0b4;
+        text-align: center;
+        padding: 35px 10px;
+    }
+
+    header h1 {
+        font-family: Georgia, serif;
+        font-size: 32px;
+        margin: 0;
+        color: #5f3c32;
+    }
+
+    header p {
+        font-size: 18px;
+        margin-bottom: 0;
+    }
+
+    nav {
+        background-color: #fff0f0;
+        padding: 10px 20px;
+        border-bottom: 1px solid #e6c3c8;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .btn-acceso {
+        background: transparent;
+        border: none;
+        color: #5f3c32;
+        font-size: 15px;
+        cursor: pointer;
+        padding: 8px;
+    }
+
+    .btn-salir {
+        background-color: #be5578;
+        color: white;
+        border: none;
+        border-radius: 7px;
+        padding: 9px 15px;
+        cursor: pointer;
+    }
+
+    main {
+        min-height: 400px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 35px;
+    }
+
+    .panel-botones {
+        width: 100%;
+        max-width: 440px;
+        display: grid;
+        grid-template-rows: repeat(3, 1fr);
+        gap: 15px;
+    }
+
+    .boton {
+        padding: 20px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #5f3c32;
+        background-color: #efa0b4;
+        border: 2px solid #be5578;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .boton:hover:not(:disabled) {
+        background-color: #e985a1;
+        transform: scale(1.03);
+    }
+
+    .boton:disabled {
+        background-color: #e7d5d9;
+        border-color: #c9b6bb;
+        color: #95858a;
+        cursor: not-allowed;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.45);
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        z-index: 20;
+    }
+
+    .contenido-modal {
+        background-color: #fff7f0;
+        padding: 30px;
+        width: 100%;
+        max-width: 380px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px #0003;
+        text-align: center;
+    }
+
+    .contenido-modal h2 {
+        color: #be5578;
+        margin-top: 0;
+    }
+
+    .contenido-modal select {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: 1px solid #d5a0ad;
+        border-radius: 7px;
+        font-size: 15px;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .acciones button {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 7px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .aceptar {
+        background-color: #be5578;
+        color: white;
+    }
+
+    .cancelar {
+        background-color: #e7d5d9;
+        color: #5f3c32;
+    }
+
+    @media (max-width: 500px) {
+        header h1 {
+            font-size: 25px;
+        }
+
+        .boton {
+            font-size: 17px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<!-- Encabezado -->
+<header>
+    <h1>ANTOJITOS DIANITA'S</h1>
+    <p>¡Bienvenido administrador!</p>
+    <p id="nombreAdministrador"></p>
+</header>
+
+<!-- Barra de acceso -->
+<nav>
+    <span>Acceso de administrador</span>
+
+    <button class="btn-salir" onclick="cerrarSesion()">
+        Cerrar sesión
+    </button>
+</nav>
+
+<!-- Botones principales -->
+<main>
+    <div class="panel-botones">
+
+        <button class="boton" onclick="abrirMenu()">
+            MENÚ
+        </button>
+
+        <button class="boton" onclick="abrirMesa()">
+            ABRIR MESA
+        </button>
+
+        <button class="boton" id="btnAdministrar"
+                onclick="abrirAdministracion()" disabled>
+            ADMINISTRAR
+        </button>
+
+        <button class="boton" id="btnAdministrarM"
+                onclick="abrirAdministracionM()" disabled>
+            ADMINISTRAR MENÚ
+        </button>
+
+    </div>
+</main>
+
+<!-- Ventana para seleccionar mesa -->
+<div class="modal" id="modalMesa">
+    <div class="contenido-modal">
+
+        <h2>Abrir mesa</h2>
+
+        <p>Selecciona la mesa que deseas abrir:</p>
+
+        <select id="seleccionMesa">
+            <option value="Mesa 1">Mesa 1</option>
+            <option value="Mesa 2">Mesa 2</option>
+            <option value="Mesa 3">Mesa 3</option>
+            <option value="Mesa 4">Mesa 4</option>
+            <option value="Mesa 5">Mesa 5</option>
+            <option value="Mesa 6">Mesa 6</option>
+            <option value="Mesa 7">Mesa 7</option>
+            <option value="Mesa 8">Mesa 8</option>
+        </select>
+
+        <div class="acciones">
+            <button class="aceptar" onclick="confirmarMesa()">
+                Aceptar
+            </button>
+
+            <button class="cancelar" onclick="cerrarModal('modalMesa')">
+                Cancelar
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    // Verificar que exista una sesión de administrador
+    const puesto = localStorage.getItem("puesto");
+    const nombre = localStorage.getItem("nombre");
+
+    if (puesto !== "administrador") {
+
+        alert("No tienes permiso para acceder a esta página.");
+
+        window.location.href = "login.html";
+
+    } else {
+
+        // Mostrar nombre del administrador
+        document.getElementById("nombreAdministrador").textContent =
+            "Bienvenido(a), " + nombre;
+
+        // Habilitar botón de administración
+        document.getElementById("btnAdministrar").disabled = false;
+        document.getElementById("btnAdministrarM").disabled = false;
+
+    }
+
+    // Abrir menú de productos
+    function abrirMenu() {
+        window.location.href = "MenuDianitas.html";
+    }
+
+    // Seleccionar mesa
+    function abrirMesa() {
+        document.getElementById("modalMesa").style.display = "flex";
+    }
+
+    function confirmarMesa() {
+
+        const mesa = document.getElementById("seleccionMesa").value;
+
+        alert(
+            mesa + " seleccionada.\n" +
+            "Ahora puedes entrar al menú para tomar el pedido."
+        );
+
+        cerrarModal("modalMesa");
+    }
+
+    // Abrir administración de empleados
+    function abrirAdministracion() {
+
+        window.location.href = "empleadosDianitas.html";
+
+    }
+
+    function abrirAdministracionM() {
+
+        window.location.href = "administrarMenu.html";
+
+    }
+
+    // Cerrar ventanas emergentes
+    function cerrarModal(id) {
+
+        document.getElementById(id).style.display = "none";
+
+    }
+
+    // Cerrar sesión
+    function cerrarSesion() {
+
+        localStorage.removeItem("nombre");
+        localStorage.removeItem("puesto");
+
+        window.location.href = "login.html";
+
+    }
+
+</script>
+
+</body>
+</html>

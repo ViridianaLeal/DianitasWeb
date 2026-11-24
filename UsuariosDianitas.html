@@ -1,0 +1,500 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Usuarios - Dianita's</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: rgb(255, 247, 240);
+            font-family: Arial, sans-serif;
+            padding: 25px;
+            color: rgb(95, 60, 50);
+        }
+
+        .principal {
+            max-width: 850px;
+            margin: auto;
+        }
+
+        /* Encabezado */
+
+        .encabezado {
+            background-color: rgb(239, 160, 180);
+            text-align: center;
+            padding: 25px 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .encabezado h1 {
+            font-family: Georgia, serif;
+            font-size: 27px;
+        }
+
+        /* Formulario */
+
+        .formulario {
+            background-color: white;
+            border: 2px solid rgb(239, 160, 180);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .grupo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        label {
+            width: 190px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid rgb(239, 160, 180);
+            border-radius: 7px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: rgb(190, 85, 120);
+        }
+
+        /* Botones */
+
+        .botones {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 7px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .registrar {
+            background-color: rgb(93, 155, 111);
+        }
+
+        .registrar:hover {
+            background-color: rgb(65, 125, 85);
+        }
+
+        .limpiar {
+            background-color: rgb(239, 160, 180);
+        }
+
+        .limpiar:hover {
+            background-color: rgb(220, 125, 150);
+        }
+
+        .eliminar {
+            background-color: rgb(190, 85, 120);
+        }
+
+        .eliminar:hover {
+            background-color: rgb(150, 55, 90);
+        }
+
+        /* Tabla */
+
+        .tabla-contenedor {
+            background-color: white;
+            padding: 20px;
+            border: 1px solid rgb(239, 160, 180);
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        .tabla-contenedor h2 {
+            font-family: Georgia, serif;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: rgb(239, 160, 180);
+            color: rgb(95, 60, 50);
+            padding: 13px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background-color: rgb(255, 240, 245);
+        }
+
+        tr.seleccionado {
+            background-color: rgb(255, 220, 230);
+        }
+
+        .vacio {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 12px;
+            }
+
+            .grupo {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+
+            label {
+                width: 100%;
+            }
+
+            .botones button {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="principal">
+
+        <!-- Encabezado -->
+
+        <div class="encabezado">
+            <h1>ADMINISTRACIÓN DE EMPLEADOS</h1>
+        </div>
+
+
+        <!-- Formulario -->
+
+        <div class="formulario">
+
+            <form id="formularioUsuarios">
+
+                <div class="grupo">
+
+                    <label for="nombre">Nombre:</label>
+
+                    <input
+                        type="text"
+                        id="nombre"
+                        placeholder="Ingresa el nombre del empleado">
+
+                </div>
+
+
+                <div class="grupo">
+
+                    <label for="correo">Correo electrónico:</label>
+
+                    <input
+                        type="email"
+                        id="correo"
+                        placeholder="ejemplo@correo.com">
+
+                </div>
+
+
+                <div class="grupo">
+
+                    <label for="contrasena">Contraseña:</label>
+
+                    <input
+                        type="password"
+                        id="contrasena"
+                        placeholder="Mínimo 8 caracteres">
+
+                </div>
+
+
+                <!-- Botones -->
+
+                <div class="botones">
+
+                    <button type="submit" class="registrar">
+                        Registrar empleado
+                    </button>
+
+                    <button type="button" class="limpiar"
+                        onclick="limpiarCampos()">
+                        Limpiar
+                    </button>
+
+                    <button type="button" class="eliminar"
+                        onclick="eliminarUsuario()">
+                        Eliminar seleccionado
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- Tabla de empleados -->
+
+        <div class="tabla-contenedor">
+
+            <h2>Empleados registrados</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo electrónico</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="tablaUsuarios">
+
+                    <tr id="filaVacia">
+                        <td colspan="2" class="vacio">
+                            No hay empleados registrados.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // Lista de empleados
+
+        let usuarios = [];
+
+        let usuarioSeleccionado = -1;
+
+
+        // Registrar empleado
+
+        document.getElementById("formularioUsuarios")
+            .addEventListener("submit", function(e) {
+
+                e.preventDefault();
+
+                let nombre = document.getElementById("nombre").value.trim();
+
+                let correo = document.getElementById("correo").value.trim();
+
+                let contrasena = document.getElementById("contrasena").value;
+
+
+                // Validar campos vacíos
+
+                if (nombre === "" || correo === "" || contrasena === "") {
+
+                    alert("Completa todos los campos.");
+
+                    return;
+                }
+
+
+                // Validar correo
+
+                let formatoCorreo = /^[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}$/;
+
+                if (!formatoCorreo.test(correo)) {
+
+                    alert("Ingresa un correo electrónico válido.");
+
+                    return;
+                }
+
+
+                // Validar contraseña
+
+                if (contrasena.length < 8) {
+
+                    alert("La contraseña debe tener al menos 8 caracteres.");
+
+                    return;
+                }
+
+
+                // Evitar correos duplicados
+
+                let existe = usuarios.some(usuario =>
+                    usuario.correo.toLowerCase() === correo.toLowerCase()
+                );
+
+                if (existe) {
+
+                    alert("Este correo ya está registrado.");
+
+                    return;
+                }
+
+
+                // Guardar empleado
+
+                usuarios.push({
+                    nombre: nombre,
+                    correo: correo,
+                    contrasena: contrasena
+                });
+
+
+                actualizarTabla();
+
+                alert("Usuario registrado correctamente.");
+
+                limpiarCampos();
+
+            });
+
+
+        // Actualizar tabla
+
+        function actualizarTabla() {
+
+            let tabla = document.getElementById("tablaUsuarios");
+
+            tabla.innerHTML = "";
+
+            usuarios.forEach((usuario, indice) => {
+
+                let fila = document.createElement("tr");
+
+                if (indice === usuarioSeleccionado) {
+                    fila.classList.add("seleccionado");
+                }
+
+                let celdaNombre = document.createElement("td");
+                celdaNombre.textContent = usuario.nombre;
+
+                let celdaCorreo = document.createElement("td");
+                celdaCorreo.textContent = usuario.correo;
+
+                fila.appendChild(celdaNombre);
+                fila.appendChild(celdaCorreo);
+
+                fila.addEventListener("click", function() {
+
+                    usuarioSeleccionado = indice;
+
+                    actualizarTabla();
+
+                });
+
+                tabla.appendChild(fila);
+
+            });
+
+
+            if (usuarios.length === 0) {
+
+                tabla.innerHTML = `
+                    <tr>
+                        <td colspan="2" class="vacio">
+                            No hay empleados registrados.
+                        </td>
+                    </tr>
+                `;
+
+            }
+
+        }
+
+
+        // Limpiar campos
+
+        function limpiarCampos() {
+
+            document.getElementById("nombre").value = "";
+
+            document.getElementById("correo").value = "";
+
+            document.getElementById("contrasena").value = "";
+
+            document.getElementById("nombre").focus();
+
+        }
+
+
+        // Eliminar empleado
+
+        function eliminarUsuario() {
+
+            if (usuarioSeleccionado === -1) {
+
+                alert("Selecciona un usuario de la tabla.");
+
+                return;
+            }
+
+
+            let respuesta = confirm(
+                "¿Deseas eliminar al usuario seleccionado?"
+            );
+
+
+            if (respuesta) {
+
+                usuarios.splice(usuarioSeleccionado, 1);
+
+                usuarioSeleccionado = -1;
+
+                actualizarTabla();
+
+                alert("Usuario eliminado correctamente.");
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

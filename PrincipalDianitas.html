@@ -1,0 +1,382 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Principal - Dianita's</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #fff7f0;
+        color: #5f3c32;
+        min-height: 100vh;
+    }
+
+    /* Encabezado */
+    header {
+        background-color: #efa0b4;
+        text-align: center;
+        padding: 35px 10px;
+    }
+
+    header h1 {
+        font-family: Georgia, serif;
+        font-size: 32px;
+        margin: 0;
+        color: #5f3c32;
+    }
+
+    header p {
+        font-size: 18px;
+        margin-bottom: 0;
+    }
+
+    /* Barra de acceso */
+    nav {
+        background-color: #fff0f0;
+        padding: 10px 20px;
+        border-bottom: 1px solid #e6c3c8;
+    }
+
+    .acceso {
+        position: relative;
+        display: inline-block;
+    }
+
+    .btn-acceso {
+        background: transparent;
+        border: none;
+        color: #5f3c32;
+        font-size: 15px;
+        cursor: pointer;
+        padding: 8px;
+    }
+
+    .opciones {
+        display: none;
+        position: absolute;
+        background-color: white;
+        min-width: 230px;
+        box-shadow: 0 4px 10px #0002;
+        border-radius: 8px;
+        z-index: 10;
+    }
+
+    .opciones button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        background: white;
+        color: #5f3c32;
+        cursor: pointer;
+        text-align: left;
+    }
+
+    .opciones button:hover {
+        background-color: #ffe1e8;
+    }
+
+    .acceso:hover .opciones {
+        display: block;
+    }
+
+    /* Botones principales */
+    main {
+        min-height: 400px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 35px;
+    }
+
+    .panel-botones {
+        width: 100%;
+        max-width: 440px;
+        display: grid;
+        grid-template-rows: repeat(3, 1fr);
+        gap: 15px;
+    }
+
+    .boton {
+        padding: 20px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #5f3c32;
+        background-color: #efa0b4;
+        border: 2px solid #be5578;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .boton:hover:not(:disabled) {
+        background-color: #e985a1;
+        transform: scale(1.03);
+    }
+
+    .boton:disabled {
+        background-color: #e7d5d9;
+        border-color: #c9b6bb;
+        color: #95858a;
+        cursor: not-allowed;
+    }
+
+    /* Ventanas emergentes */
+    .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.45);
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        z-index: 20;
+    }
+
+    .contenido-modal {
+        background-color: #fff7f0;
+        padding: 30px;
+        width: 100%;
+        max-width: 380px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px #0003;
+        text-align: center;
+    }
+
+    .contenido-modal h2 {
+        color: #be5578;
+        margin-top: 0;
+    }
+
+    .contenido-modal input,
+    .contenido-modal select {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: 1px solid #d5a0ad;
+        border-radius: 7px;
+        font-size: 15px;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .acciones button {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 7px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .aceptar {
+        background-color: #be5578;
+        color: white;
+    }
+
+    .cancelar {
+        background-color: #e7d5d9;
+        color: #5f3c32;
+    }
+
+    @media (max-width: 500px) {
+        header h1 {
+            font-size: 25px;
+        }
+
+        .boton {
+            font-size: 17px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<!-- Encabezado -->
+<header>
+    <h1>ANTOJITOS DIANITA'S</h1>
+    <p>¡Bienvenido!</p>
+</header>
+
+<!-- Menú de acceso -->
+<nav>
+    <div class="acceso">
+        <button class="btn-acceso">Acceso ▼</button>
+
+        <div class="opciones">
+            <button onclick="mostrarLogin()">
+                Ingresar como administrador
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- Botones principales -->
+<main>
+    <div class="panel-botones">
+
+        <button class="boton" onclick="abrirMenu()">
+            MENÚ
+        </button>
+
+        <button class="boton" onclick="abrirMesa()">
+            ABRIR MESA
+        </button>
+
+        <button class="boton" id="btnAdministrar"
+                onclick="abrirAdministracion()" disabled>
+            ADMINISTRAR
+        </button>
+
+    </div>
+</main>
+
+<!-- Ventana para seleccionar mesa -->
+<div class="modal" id="modalMesa">
+    <div class="contenido-modal">
+
+        <h2>Abrir mesa</h2>
+
+        <p>Selecciona la mesa que deseas abrir:</p>
+
+        <select id="seleccionMesa">
+            <option value="Mesa 1">Mesa 1</option>
+            <option value="Mesa 2">Mesa 2</option>
+            <option value="Mesa 3">Mesa 3</option>
+            <option value="Mesa 4">Mesa 4</option>
+            <option value="Mesa 5">Mesa 5</option>
+            <option value="Mesa 6">Mesa 6</option>
+            <option value="Mesa 7">Mesa 7</option>
+            <option value="Mesa 8">Mesa 8</option>
+        </select>
+
+        <div class="acciones">
+            <button class="aceptar" onclick="confirmarMesa()">
+                Aceptar
+            </button>
+
+            <button class="cancelar" onclick="cerrarModal('modalMesa')">
+                Cancelar
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- Ventana de administrador -->
+<div class="modal" id="modalLogin">
+    <div class="contenido-modal">
+
+        <h2>Acceso de administrador</h2>
+
+        <input type="text" id="usuario"
+               placeholder="Usuario">
+
+        <input type="password" id="contrasena"
+               placeholder="Contraseña">
+
+        <div class="acciones">
+            <button class="aceptar" onclick="iniciarSesionAdmin()">
+                Ingresar
+            </button>
+
+            <button class="cancelar" onclick="cerrarModal('modalLogin')">
+                Cancelar
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    // Datos de acceso del administrador
+    const usuarioAdmin = "admin";
+    const contrasenaAdmin = "1234";
+
+    // Abrir el menú de productos
+    function abrirMenu() {
+        window.location.href = "MenuDianitas.html";
+    }
+
+    // Seleccionar una mesa
+    function abrirMesa() {
+        document.getElementById("modalMesa").style.display = "flex";
+    }
+
+    function confirmarMesa() {
+
+        const mesa = document.getElementById("seleccionMesa").value;
+
+        alert(
+            mesa + " seleccionada.\n" +
+            "Ahora puedes entrar al menú para tomar el pedido."
+        );
+
+        cerrarModal("modalMesa");
+    }
+
+    // Mostrar acceso de administrador
+    function mostrarLogin() {
+
+        document.getElementById("usuario").value = "";
+        document.getElementById("contrasena").value = "";
+
+        document.getElementById("modalLogin").style.display = "flex";
+    }
+
+    // Validar credenciales del administrador
+    function iniciarSesionAdmin() {
+
+        const nombre = document.getElementById("usuario").value;
+        const clave = document.getElementById("contrasena").value;
+
+        if (nombre === usuarioAdmin &&
+            clave === contrasenaAdmin) {
+
+            document.getElementById("btnAdministrar").disabled = false;
+
+            alert("Acceso de administrador autorizado.");
+
+            cerrarModal("modalLogin");
+
+        } else {
+
+            alert("Usuario o contraseña incorrectos.");
+
+        }
+    }
+
+    // Ventana de administración
+    function abrirAdministracion() {
+
+        alert(
+            "Aquí podrás agregar las funciones de administración."
+        );
+
+    }
+
+    // Cerrar ventanas emergentes
+    function cerrarModal(id) {
+
+        document.getElementById(id).style.display = "none";
+
+    }
+
+</script>
+<script src="js/notificaciones.js"></script>
+
+</body>
+</html>

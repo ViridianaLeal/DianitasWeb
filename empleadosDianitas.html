@@ -1,0 +1,615 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Empleados | Dianita's</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Estilos -->
+    <style>
+        body {
+            background-color: #fff0f5;
+            font-family: Arial, sans-serif;
+        }
+
+        .principal {
+            width: 95%;
+            max-width: 1200px;
+            margin: 35px auto;
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+
+        .encabezado {
+            text-align: center;
+            color: #d63384;
+            margin-bottom: 25px;
+        }
+
+        .encabezado h1 {
+            font-weight: bold;
+        }
+
+        .formulario {
+            background-color: #fff0f5;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .grupo {
+            margin-bottom: 15px;
+        }
+
+        .grupo label {
+            font-weight: bold;
+            color: #8a315c;
+            margin-bottom: 5px;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+        }
+
+        .tabla-contenedor table {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .tabla-contenedor thead {
+            background-color: #d63384;
+            color: white;
+        }
+
+        .botones {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .registrar {
+            background-color: #d63384;
+            color: white;
+            border: none;
+        }
+
+        .registrar:hover {
+            background-color: #b8256d;
+            color: white;
+        }
+
+        .limpiar {
+            background-color: #f8bbd0;
+            color: #84244f;
+            border: none;
+        }
+
+        .limpiar:hover {
+            background-color: #f48fb1;
+            color: #84244f;
+        }
+
+        .modal-header {
+            background-color: #d63384;
+            color: white;
+        }
+
+        .modal-header .btn-close {
+            filter: brightness(0) invert(1);
+        }
+
+        .modal-title {
+            font-weight: bold;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #d63384;
+            box-shadow: 0 0 0 0.2rem rgba(214, 51, 132, 0.15);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="principal">
+
+        <!-- ENCABEZADO -->
+        <div class="encabezado">
+            <h1>DIANITA'S</h1>
+            <h4>Administración de empleados</h4>
+            <p>Registro y control del personal</p>
+        </div>
+
+        <!-- BOTÓN AGREGAR -->
+        <div class="formulario">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                <div>
+                    <h4 style="color: #d63384;">
+                        Registro de empleados
+                    </h4>
+
+                    <p class="mb-0">
+                        Administra la información de tus empleados.
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    class="btn registrar"
+                    data-bs-toggle="modal"
+                    data-bs-target="#agregarModal"
+                >
+                    + Agregar empleado
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- TABLA DE EMPLEADOS -->
+        <div class="tabla-contenedor">
+
+            <h4 class="mb-3" style="color: #d63384;">
+                Lista de empleados
+            </h4>
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellidos</th>
+                        <th>Puesto</th>
+                        <th>Teléfono</th>
+                        <th>Correo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody id="registros">
+
+                    <!-- Los empleados se cargan desde JavaScript -->
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================= -->
+    <!-- MODAL AGREGAR EMPLEADO -->
+    <!-- ================================= -->
+
+    <div
+        class="modal fade"
+        id="agregarModal"
+        tabindex="-1"
+        aria-labelledby="tituloAgregar"
+        aria-hidden="true"
+    >
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title" id="tituloAgregar">
+                        Registrar empleado
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar"
+                    ></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <form id="formAgregar">
+
+                        <!-- ID AUTOMÁTICO -->
+                        <div class="grupo">
+
+                            <label for="id_empleado">
+                                ID del empleado
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="id_empleado"
+                                value="Automático"
+                                disabled
+                            >
+
+                        </div>
+
+                        <!-- NOMBRE -->
+                        <div class="grupo">
+
+                            <label for="nombre">
+                                Nombre
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="nombre"
+                                name="nombre"
+                                placeholder="Nombre del empleado"
+                                required
+                            >
+
+                        </div>
+
+                        <!-- APELLIDOS -->
+                        <div class="grupo">
+
+                            <label for="apellidos">
+                                Apellidos
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="apellidos"
+                                name="apellidos"
+                                placeholder="Apellidos del empleado"
+                                required
+                            >
+
+                        </div>
+
+                        <!-- PUESTO -->
+                        <div class="grupo">
+
+                            <label for="puesto">
+                                Puesto
+                            </label>
+
+                            <select
+                                class="form-select"
+                                id="puesto"
+                                name="puesto"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecciona un puesto
+                                </option>
+
+                                <option value="mesera">
+                                    Mesera
+                                </option>
+
+                                <option value="cocinera">
+                                    Cocinera
+                                </option>
+
+                                <option value="administrador">
+                                    Administrador
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <!-- TELEFONO -->
+                        <div class="grupo">
+
+                            <label for="telefono">
+                                Teléfono
+                            </label>
+
+                            <input
+                                type="tel"
+                                class="form-control"
+                                id="telefono"
+                                name="telefono"
+                                placeholder="Número telefónico"
+                                required
+                            >
+
+                        </div>
+
+                        <!-- CORREO -->
+                        <div class="grupo">
+
+                            <label for="correo">
+                                Correo electrónico
+                            </label>
+
+                            <input
+                                type="email"
+                                class="form-control"
+                                id="correo"
+                                name="correo"
+                                placeholder="correo@ejemplo.com"
+                                required
+                            >
+
+                        </div>
+
+                        <!-- CONTRASEÑA -->
+                        <div class="grupo">
+
+                            <label for="contrasena">
+                                Contraseña de acceso
+                            </label>
+
+                            <input
+                                type="password"
+                                class="form-control"
+                                id="contrasena"
+                                name="contrasena"
+                                placeholder="Mínimo 8 caracteres"
+                                minlength="8"
+                                required
+                            >
+
+                            <small class="text-muted">
+                                Esta contraseña permitirá al empleado iniciar sesión.
+                            </small>
+
+                        </div>
+
+                        <!-- BOTONES -->
+                        <div class="botones mt-4">
+
+                            <button
+                                type="button"
+                                class="btn registrar"
+                                onclick="agregarEmpleado()"
+                            >
+                                Guardar empleado
+                            </button>
+
+                            <button
+                                type="reset"
+                                class="btn limpiar"
+                            >
+                                Limpiar
+                            </button>
+
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                            >
+                                Cancelar
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================= -->
+    <!-- MODAL EDITAR EMPLEADO -->
+    <!-- ================================= -->
+
+    <div
+        class="modal fade"
+        id="editarModal"
+        tabindex="-1"
+        aria-labelledby="tituloEditar"
+        aria-hidden="true"
+    >
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title" id="tituloEditar">
+                        Editar empleado
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar"
+                    ></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <form id="formEditar">
+
+                        <!-- ID -->
+                        <div class="grupo">
+
+                            <label for="eid_empleado">
+                                ID del empleado
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="eid_empleado"
+                                name="id_empleado"
+                                readonly
+                            >
+
+                        </div>
+
+                        <!-- NOMBRE -->
+                        <div class="grupo">
+
+                            <label for="enombre">
+                                Nombre
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="enombre"
+                                name="nombre"
+                                required
+                            >
+
+                        </div>
+
+                        <!-- APELLIDOS -->
+                        <div class="grupo">
+
+                            <label for="eapellidos">
+                                Apellidos
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="eapellidos"
+                                name="apellidos"
+                                required
+                            >
+
+                        </div>
+
+                        <!-- PUESTO -->
+                        <div class="grupo">
+
+                            <label for="epuesto">
+                                Puesto
+                            </label>
+
+                            <select
+                                class="form-select"
+                                id="epuesto"
+                                name="puesto"
+                                required
+                            >
+
+                                <option value="mesera">
+                                    Mesera
+                                </option>
+
+                                <option value="cocinera">
+                                    Cocinera
+                                </option>
+
+                                <option value="administrador">
+                                    Administrador
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <!-- TELEFONO -->
+                        <div class="grupo">
+
+                            <label for="etelefono">
+                                Teléfono
+                            </label>
+
+                            <input
+                                type="tel"
+                                class="form-control"
+                                id="etelefono"
+                                name="telefono"
+                                required
+                            >
+
+                        </div>
+
+                        <!-- CORREO -->
+                        <div class="grupo">
+
+                            <label for="ecorreo">
+                                Correo electrónico
+                            </label>
+
+                            <input
+                                type="email"
+                                class="form-control"
+                                id="ecorreo"
+                                name="correo"
+                                required
+                            >
+
+                        </div>
+
+                        <!-- BOTONES -->
+                        <div class="botones mt-4">
+
+                            <button
+                                type="button"
+                                class="btn registrar"
+                                onclick="editarEmpleado()"
+                            >
+                                Guardar cambios
+                            </button>
+
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                            >
+                                Cancelar
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================= -->
+    <!-- LIBRERÍAS Y JAVASCRIPT -->
+    <!-- ================================= -->
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- JavaScript de empleados -->
+    <script src="js/appEmpleado.js"></script>
+
+</body>
+
+</html>
